@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🖤小妲的秘密游戏🖤</title>
+    <style>
+        body { font-family: system-ui, sans-serif; text-align: center; padding: 20px; margin: 0; min-height: 100vh; background: linear-gradient(rgba(20,10,40,0.85), rgba(10,5,30,0.9)), url('https://i.postimg.cc/13w7pkDJ/Picsart-26-07-13-20-47-11-492.png') center/cover fixed; color: #e0d4ff; }
+        .container { max-width: 420px; margin: 20px auto; background: rgba(15,10,35,0.92); padding: 30px 20px; border-radius: 24px; box-shadow: 0 0 40px rgba(140,80,255,0.3); border: 1px solid rgba(180,100,255,0.2); }
+        h1 { color: #c4a1ff; text-shadow: 0 0 15px rgba(180,100,255,0.6); margin: 10px 0 20px; }
+        .option, button { padding: 16px 24px; margin: 10px; font-size: 17px; border: none; border-radius: 50px; cursor: pointer; width: 85%; font-weight: 600; }
+        .option { background: rgba(100,50,200,0.2); border: 2px solid #a78bfa; color: #e0d4ff; }
+        .fap { background: linear-gradient(#7c3aed,#6d28d9); color: white; }
+        .cum { background: linear-gradient(#db2777,#be185d); color: white; font-weight: bold; }
+        .start-btn, .finish-btn { background: #a855f7; color: white; }
+        .amount { font-size: 52px; font-weight: bold; color: #e0bbff; text-shadow: 0 0 20px rgba(192,132,252,0.8); margin: 10px 0 25px; }
+        .qr { max-width: 240px; margin: 12px auto; display: block; border-radius: 12px; border: 2px solid #a78bfa; }
+        .mystery-img { width: 160px; height: 160px; object-fit: cover; border-radius: 50%; border: 3px solid #c4a1ff; margin: 15px 0; box-shadow: 0 0 25px rgba(180,100,255,0.5); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="disclaimer-screen">
+            <h1>🌑 小妲的秘密游戏</h1>
+            <div class="disclaimer">
+                <p><strong>免责声明</strong></p>
+                <p>本游戏仅供娱乐，内容为虚构幻想。参与即表示您已年满18岁，并自愿承担所有后果。</p>
+                <button onclick="showRules()" class="start-btn">我已阅读并同意</button>
+            </div>
+        </div>
+
+        <div id="rules-screen" style="display:none;">
+            <h1>游戏规则</h1>
+            <p>1. 选择初始贡金<br>2. 边点击边🦌<br>3. 达到极限后点击“想💦”<br>4. 支付后即可射精</p>
+            <button onclick="startGameSelect()" class="start-btn">开始游戏</button>
+        </div>
+
+        <div id="start-screen" style="display:none;">
+            <h1>选择初始贡金</h1>
+            <button class="option" onclick="start(0)">0 元</button>
+            <button class="option" onclick="start(18)">18 元</button>
+            <button class="option" onclick="start(38)">38 元</button>
+            <button class="option" onclick="start(48)">48 元</button>
+            <button class="option" onclick="start(58)">58 元</button>
+        </div>
+
+        <div id="game-screen" style="display:none;">
+            <img src="https://i.postimg.cc/13w7pkDJ/Picsart-26-07-13-20-47-11-492.png" class="mystery-img" alt="小妲">
+            <p class="amount-label">当前贡金</p>
+            <div class="amount" id="amount">0</div>
+            <button class="fap" onclick="fap()">🦌 一下 (+1)</button>
+            <button class="cum" onclick="wantCum()">想💦</button>
+        </div>
+
+        <div id="qr-screen" style="display:none;">
+            <p>完成支付后即可射精</p>
+            <div style="margin:20px 0;"><p style="margin:8px 0;color:#c4a1ff;">💰 支付宝</p><img src="https://i.postimg.cc/SNh3sQBR/IMG-20260721-005325.jpg" class="qr"></div>
+            <div style="margin:20px 0;"><p style="margin:8px 0;color:#c4a1ff;">💰 微信支付</p><img src="https://i.postimg.cc/ht4YLyP8/IMG-20260721-005339.png" class="qr"></div>
+            <button onclick="finishGame()" class="finish-btn">我已支付</button>
+            <button onclick="backToGame()" class="back-btn">返回继续🦌</button>
+        </div>
+    </div>
+
+    <script>
+        let currentAmount = 0;
+
+        function showRules() { document.getElementById('disclaimer-screen').style.display = 'none'; document.getElementById('rules-screen').style.display = 'block'; }
+        function startGameSelect() { document.getElementById('rules-screen').style.display = 'none'; document.getElementById('start-screen').style.display = 'block'; }
+        function start(initial) { currentAmount = initial; document.getElementById('start-screen').style.display = 'none'; document.getElementById('game-screen').style.display = 'block'; updateAmount(); }
+        function updateAmount() { document.getElementById('amount').textContent = currentAmount; }
+        function fap() { currentAmount += 1; updateAmount(); }
+        function wantCum() { document.getElementById('game-screen').style.display = 'none'; document.getElementById('qr-screen').style.display = 'block'; }
+        function finishGame() {
+            let msg = currentAmount < 30 ? "真是废物🖕🏻，才坚持不到30下，阳痿的傻逼🖕🏻" : currentAmount < 60 ? "垃圾！不到60下就射，比种猪还废物呢～🖤" : currentAmount < 100 ? "啧，是个还不错的废物🖕🏻但是谁知道你是不是初始金额比较高呢？～🖤" : "还不错，坚持的挺久，但是100多下很厉害嘛？不一样还是垃圾嘛～🖤";
+            alert("🖤小妲：\n\n" + msg + "\n\n当前贡金：" + currentAmount + " 元");
+            if (confirm("再玩一次？")) location.reload();
+        }
+        function backToGame() { document.getElementById('qr-screen').style.display = 'none'; document.getElementById('game-screen').style.display = 'block'; }
+    </script>
+</body>
+</html>
