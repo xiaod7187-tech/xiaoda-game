@@ -269,7 +269,7 @@
         }
 
         function updateAmount() { 
-            document.getElementById('amount').textContent = currentAmount; 
+            document.getElementById('amount').textContent = currentAmount.toFixed(1); 
         }
 
         function fap() { 
@@ -287,7 +287,7 @@
                 alert("还没有贡金呢，先🦌几下吧～");
                 return;
             }
-            currentAmount = Math.floor(currentAmount * 2);
+            currentAmount = Math.round(currentAmount * 2 * 10) / 10;
             updateAmount();
             alert("恭喜，死妈快乐！");
         }
