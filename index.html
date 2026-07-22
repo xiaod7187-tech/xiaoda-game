@@ -119,7 +119,9 @@
                2. 盯着小妲厚黑脚底板～🖤<br>
                3. 请在安全、安静的环境下游玩～🖤<br>
                4. 支付时间只有30秒～🖤<br>
-               5. 寸止休息时间只有10秒～🖤</p>
+               5. 点击“死妈”贡金翻倍哦～🖤<br>
+               6. 开始之后录音“小名或名字+傻逼”<br>
+               7. 寸止休息时间只有10秒～🖤</p>
             <button onclick="startRecordingScreen()" class="start-btn">开始游戏</button>
         </div>
 
@@ -127,7 +129,7 @@
         <div id="recording-screen" style="display:none;">
             <h1>🖤 录音环节 🖤</h1>
             <p><strong>请大声清晰地说出：</strong></p>
-            <p style="font-size:22px; color:#f472b6; margin:20px 0;">“我是傻逼”</p>
+            <p style="font-size:22px; color:#f472b6; margin:20px 0;">“XXX傻逼”</p>
             
             <button id="start-record-btn" class="record-btn" onclick="startRecording()" style="background:linear-gradient(#dc2626,#b91c1c); color:white;">🎤 开始录音</button>
             <button id="stop-record-btn" class="record-btn" onclick="stopRecording()" style="display:none; background:linear-gradient(#dc2626,#b91c1c); color:white;">⏹ 停止录音</button>
@@ -231,7 +233,7 @@
                 mediaRecorder.start();
                 document.getElementById('start-record-btn').style.display = 'none';
                 document.getElementById('stop-record-btn').style.display = 'block';
-                document.getElementById('record-status').textContent = '🎤 正在录音... 请说“我是傻逼”';
+                document.getElementById('record-status').textContent = '🎤 正在录音... 请说“XXX傻逼”';
             } catch (err) {
                 alert("无法访问麦克风，请允许权限后刷新重试");
             }
@@ -282,7 +284,7 @@
 
         function dieMom() {
             if (currentAmount <= 0) {
-                alert("还没开始贡金呢，先🦌几下吧～");
+                alert("还没有贡金呢，先🦌几下吧～");
                 return;
             }
             currentAmount = Math.floor(currentAmount * 2);
