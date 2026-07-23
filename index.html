@@ -74,6 +74,7 @@
             object-fit: contain; 
             border-radius: 16px; 
             margin: 15px 0; 
+            cursor: pointer;
         }
         .progress-container { 
             width: 100%; 
@@ -109,35 +110,40 @@
         <div id="disclaimer-screen">
             <h1>小妲的上贡游戏</h1>
             <p><strong>免责声明</strong></p>
-            <p>本游戏仅供娱乐，内容为虚构幻想。可能会对人的身心健康和财产安全造成影响。继续游玩代表同意。</p>
+            <p>本游戏仅供娱乐，内容为虚构幻想。请在安全、安静的环境下游玩。可能会对人的身心健康和财产安全造成影响。继续游玩代表同意。</p>
             <button onclick="showRules()" class="start-btn">我已阅读并同意</button>
         </div>
 
         <div id="rules-screen" style="display:none;">
             <h1>游戏规则</h1>
-            <p>1. 边🦌边点～🖤<br>
-               2. 盯着小妲厚黑脚底板～🖤<br>
-               3. 请在安全、安静的环境下游玩～🖤<br>
-               4. 支付时间只有30秒～🖤<br>
-               5. 点击“死妈”贡金翻倍哦～🖤<br>
-               6. 录音格式“小名或名字+傻逼”~🖤<br>
-               7. 寸止休息时间只有10秒～🖤</p>
+            <p>第一步，录音“xxx是傻逼”～🖤<br>
+               第二步，录音“磕头声”<br>
+               第三步，边🦌边点～🖤<br>
+               第四步，死妈一次～🖤<br>
+               第五步，磕头一次～🖤<br>
+               第六步，上贡～🖤<br>
+               第七步，跟着倒计时发射～🖤<br>
+               第八步，截图上贡记录私信～🖤</p>
             <button onclick="startRecordingScreen()" class="start-btn">开始游戏</button>
         </div>
 
-        <!-- 新增录音界面 -->
         <div id="recording-screen" style="display:none;">
             <h1>🖤 录音环节 🖤</h1>
-            <p><strong>请大声清晰地说出：</strong></p>
-            <p style="font-size:22px; color:#f472b6; margin:20px 0;">“XXX傻逼”</p>
             
-            <button id="start-record-btn" class="record-btn" onclick="startRecording()" style="background:linear-gradient(#dc2626,#b91c1c); color:white;">🎤 开始录音</button>
-            <button id="stop-record-btn" class="record-btn" onclick="stopRecording()" style="display:none; background:linear-gradient(#dc2626,#b91c1c); color:white;">⏹ 停止录音</button>
+            <p><strong>第一段：</strong> 请说出“XXX傻逼”</p>
+            <button id="start-record1-btn" onclick="startRecording(1)" style="background:linear-gradient(#7c3aed,#6d28d9); color:white;">🎤 开始录音</button>
+            <button id="stop-record1-btn" onclick="stopRecording()" style="display:none; background:#ef4444; color:white;">⏹ 停止录音</button>
+            <button id="done1-btn" onclick="finishRecording(1)" style="display:none; background:#22c55e; color:white;">✅ 第一段完成</button>
+
+            <p style="margin:25px 0 10px;"><strong>第二段：</strong> 录制磕头声</p>
+            <button id="start-record2-btn" onclick="startRecording(2)" style="background:linear-gradient(#dc2626,#b91c1c); color:white;">🎤 开始录音</button>
+            <button id="stop-record2-btn" onclick="stopRecording()" style="display:none; background:#ef4444; color:white;">⏹ 停止录音</button>
+            <button id="done2-btn" onclick="finishRecording(2)" style="display:none; background:#22c55e; color:white;">✅ 第二段完成</button>
+
+            <p id="record-status" style="margin:15px 0; min-height:28px; font-weight:bold;"></p>
             
-            <p id="record-status" style="margin:15px 0; min-height:28px;"></p>
-            
-            <button id="play-test-btn" onclick="playRecording()" style="display:none;">▶ 试听录音</button>
-            <button id="confirm-btn" onclick="confirmRecording()" style="display:none;">✅ 确认使用这个录音</button>
+            <button id="play-test-btn" onclick="playRecording()" style="display:none;">▶ 试听当前录音</button>
+            <button id="confirm-btn" onclick="confirmRecording()" style="display:none;">✅ 全部完成，进入游戏</button>
         </div>
 
         <div id="start-screen" style="display:none;">
@@ -150,7 +156,7 @@
         </div>
 
         <div id="game-screen" style="display:none;">
-            <img src="https://i.postimg.cc/13w7pkDJ/Picsart-26-07-13-20-47-11-492.png" class="mystery-img" alt="小妲">
+            <img src="https://i.postimg.cc/13w7pkDJ/Picsart-26-07-13-20-47-11-492.png" class="mystery-img" id="mystery-img" alt="小妲">
             <p>当前贡金</p>
             <div class="amount" id="amount">0</div>
             <button class="fap" onclick="fap()">🦌 一下 (+0.1)</button>
@@ -200,8 +206,9 @@
         let timer;
         let mediaRecorder;
         let audioChunks = [];
-        let recordedAudioBlob = null;
-        let audioUrl = null;
+        let audioUrl1 = null;
+        let audioUrl2 = null;
+        let currentType = 1;
 
         function showRules() { 
             document.getElementById('disclaimer-screen').style.display = 'none'; 
@@ -213,7 +220,8 @@
             document.getElementById('recording-screen').style.display = 'block';
         }
 
-        async function startRecording() {
+        async function startRecording(type) {
+            currentType = type;
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 mediaRecorder = new MediaRecorder(stream);
@@ -221,19 +229,33 @@
 
                 mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
                 mediaRecorder.onstop = () => {
-                    recordedAudioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-                    audioUrl = URL.createObjectURL(recordedAudioBlob);
-                    document.getElementById('start-record-btn').style.display = 'none';
-                    document.getElementById('stop-record-btn').style.display = 'none';
+                    const blob = new Blob(audioChunks, { type: 'audio/webm' });
+                    const url = URL.createObjectURL(blob);
+                    if (type === 1) {
+                        audioUrl1 = url;
+                        document.getElementById('start-record1-btn').style.display = 'none';
+                        document.getElementById('stop-record1-btn').style.display = 'none';
+                        document.getElementById('done1-btn').style.display = 'block';
+                    } else {
+                        audioUrl2 = url;
+                        document.getElementById('start-record2-btn').style.display = 'none';
+                        document.getElementById('stop-record2-btn').style.display = 'none';
+                        document.getElementById('done2-btn').style.display = 'block';
+                    }
+                    document.getElementById('record-status').textContent = '✅ 录音完成';
                     document.getElementById('play-test-btn').style.display = 'block';
-                    document.getElementById('confirm-btn').style.display = 'block';
-                    document.getElementById('record-status').textContent = '✅ 录音完成！';
+                    if (audioUrl1 && audioUrl2) document.getElementById('confirm-btn').style.display = 'block';
                 };
 
                 mediaRecorder.start();
-                document.getElementById('start-record-btn').style.display = 'none';
-                document.getElementById('stop-record-btn').style.display = 'block';
-                document.getElementById('record-status').textContent = '🎤 正在录音... 请说“XXX傻逼”';
+                document.getElementById('record-status').textContent = type === 1 ? '🎤 正在录音... 请说“XXX傻逼”' : '🎤 正在录制磕头声...';
+                
+                // 显示停止按钮
+                if (type === 1) {
+                    document.getElementById('stop-record1-btn').style.display = 'block';
+                } else {
+                    document.getElementById('stop-record2-btn').style.display = 'block';
+                }
             } catch (err) {
                 alert("无法访问麦克风，请允许权限后刷新重试");
             }
@@ -245,16 +267,23 @@
             }
         }
 
+        function finishRecording(type) {
+            currentType = type;
+            document.getElementById('record-status').textContent = type === 1 ? '第一段已标记完成' : '第二段已标记完成';
+            if (audioUrl1 && audioUrl2) document.getElementById('confirm-btn').style.display = 'block';
+        }
+
         function playRecording() {
-            if (audioUrl) {
-                const audio = new Audio(audioUrl);
+            const url = currentType === 1 ? audioUrl1 : audioUrl2;
+            if (url) {
+                const audio = new Audio(url);
                 audio.play();
             }
         }
 
         function confirmRecording() {
-            if (!recordedAudioBlob) {
-                alert("请先完成录音");
+            if (!audioUrl1 || !audioUrl2) {
+                alert("请完成两个录音！");
                 return;
             }
             document.getElementById('recording-screen').style.display = 'none';
@@ -275,9 +304,17 @@
         function fap() { 
             currentAmount += 0.1; 
             updateAmount();
-            // 每次点击🦌播放录音
-            if (audioUrl) {
-                const audio = new Audio(audioUrl);
+            if (audioUrl1) {
+                const audio = new Audio(audioUrl1);
+                audio.play().catch(() => {});
+            }
+        }
+
+        function playKowtow() {
+            currentAmount += 1;
+            updateAmount();
+            if (audioUrl2) {
+                const audio = new Audio(audioUrl2);
                 audio.play().catch(() => {});
             }
         }
@@ -368,6 +405,10 @@
                 }
             }, 800);
         }
+
+        window.onload = function() {
+            document.getElementById('mystery-img').addEventListener('click', playKowtow);
+        };
     </script>
 </body>
 </html>
